@@ -1,16 +1,23 @@
-# tugas_akhir
+# Tugas Kelompok Akhir PBP-C07
 
-A new Flutter project.
+## Anggota Kelompok:
+- Kenzie Kyle Anderson - 2006596056
+- Rizki Kurniawan - 2006595785
+- Rasyad Jabbar Poncosewoyo - 2006596106
+- Ramdhan Firdaus Amelia - 2006595753
+- David Alexander - 2006596062
+- Julius Prayoga Raka Nugroho - 2006595803
+- Marvel Krent - 2006596573
 
-## Getting Started
+# Link menuju download apk
 
-This project is a starting point for a Flutter application.
+# Daftar modul yang akan diimplementasikan:
+- Login page (Rasyad Jabbar Poncosewoyo - 2006596106)
+- Home page (Rizki Kurniawan - 2006595785)
+- Product list page (Kenzie Kyle Anderson - 2006596056)
+- Shopping cart page (Ramdhan Firdaus Amelia - 2006595753)
+- Checkout page (Julius Prayoga Raka Nugroho - 2006595803)
+- Customize masker page (Marvel Krent - 2006596573)
+- Wishlist page (David Alexander - 2006596062)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Tampilan dari aplikasi mobile kami akan mengikuti tampilan halaman web kami pada proyek tengah semester. Selain itu, setiap modul aplikasi mobile kami akan mengakses database dari aplikasi web Django kami.
