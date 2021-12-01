@@ -10,6 +10,7 @@
 - Marvel Krent - 2006596573
 
 # Link menuju download apk
+Download apk: https://gitlab.com/pbp-c07/tugas-akhir/-/blob/main/app-release.apk
 
 # Daftar modul yang akan diimplementasikan:
 - Login page (Rasyad Jabbar Poncosewoyo - 2006596106)
@@ -20,4 +21,4 @@
 - Customize masker page (Marvel Krent - 2006596573)
 - Wishlist page (David Alexander - 2006596062)
 
-Tampilan dari aplikasi mobile kami akan mengikuti tampilan halaman web kami pada proyek tengah semester. Selain itu, setiap modul aplikasi mobile kami akan mengakses database dari aplikasi web Django kami.
+Tampilan dari aplikasi mobile kami akan mengikuti tampilan halaman web kami pada proyek tengah semester. Selain itu, setiap modul aplikasi mobile kami akan mengakses database dari aplikasi web Django kami. Caranya adalah kami akan menambahkan beberapa fungsi pada views.py project Django kami yang akan mereturn JsonResponse yang nantinya akan dipanggil oleh project flutter kami.
