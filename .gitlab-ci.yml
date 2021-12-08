@@ -15,10 +15,10 @@ after_script:
 flutter_build_android: #Job name
   stage: build # kind of job
   before_script:
-    - flutter packages get
-    - flutter clean
     - flutter channel stable
     - flutter upgrade
+    - flutter packages get
+    - flutter clean
   script:
      - flutter build apk
   artifacts:
