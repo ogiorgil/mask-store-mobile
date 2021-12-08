@@ -20,4 +20,4 @@ build-debug:
     - flutter channel stable
     - flutter upgrade
     - flutter pub get
-    - flutter build appbundle --debug
+    - flutter build apk --debug
