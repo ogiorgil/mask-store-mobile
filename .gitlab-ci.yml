@@ -17,6 +17,8 @@ flutter_build_android: #Job name
   before_script:
     - flutter packages get
     - flutter clean
+    - flutter channel stable
+    - flutter upgrade
   script:
      - flutter build apk
   artifacts:
