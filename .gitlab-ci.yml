@@ -17,4 +17,7 @@ build-debug:
   only:
     - branches
   script:
+    - flutter channel stable
+    - flutter upgrade
+    - flutter pub get
     - flutter build appbundle --debug
