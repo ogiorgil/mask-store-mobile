@@ -1,3 +1,4 @@
+![pipeline status](https://gitlab.com/pbp-c07/tugas-akhir/badges/david/pipeline.svg)
 # Tugas Kelompok Akhir PBP-C07
 
 ## Anggota Kelompok:
