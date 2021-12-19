@@ -30,11 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List<Masker>? parseMasker(String responseBody) {
-    if (isFetched) return null;
+    if (isFetched) return maskers;
     final parsed = jsonDecode(responseBody) as List<dynamic>;
     for (var e in parsed) {
       maskers.add(Masker.fromJson(e));
     }
+    isFetched = true;
     return maskers;
   }
 
@@ -51,8 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
       return parseMasker(response.body);
     } catch (error) {
       print(error);
-    } finally {
-      isFetched = true;
     }
     return maskers;
   }

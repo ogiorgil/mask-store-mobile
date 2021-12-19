@@ -22,15 +22,15 @@ class Masker {
   factory Masker.fromJson(Map<String, dynamic> json) {
     var img = json["image"];
     img ??= "";
-    int mapRating = (5 * json["rating"] / 100).ceil();
+    int mapRating = (5 * json["rating"].toInt() / 100).ceil();
 
     return Masker(
-        id: json["id"],
-        nama: json["nama"],
-        harga: json["harga"],
+        id: json["id"].toInt(),
+        nama: json["nama"].toString(),
+        harga: json["harga"].toDouble(),
         rating: mapRating,
         imageUrl: img,
-        stok: json["stok"],
+        stok: json["stok"].toInt(),
         deksripsi: json["deskripsi"]);
   }
 }
