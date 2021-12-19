@@ -7,6 +7,7 @@ import 'package:tugas_akhir/screens/home_screen.dart';
 import 'package:tugas_akhir/screens/masker_detail_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +42,10 @@ class _MyAppState extends State<MyApp> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{'email': email}));
+  }
+
+  void _launchURL(String url) async {
+    if (!await launch(url)) throw 'Could not launcg $url';
   }
 
   @override
@@ -193,15 +198,18 @@ class _MyAppState extends State<MyApp> {
                         children: [
                           IconButton(
                             icon: const FaIcon(FontAwesomeIcons.twitter),
-                            onPressed: () => {},
+                            onPressed: () =>
+                                _launchURL("https://twitter.com/twitter"),
                           ),
                           IconButton(
                             icon: const FaIcon(FontAwesomeIcons.facebook),
-                            onPressed: () => {},
+                            onPressed: () => _launchURL(
+                                "https://web.facebook.com/MetaIndonesia/?brand_redir=108824017345866"),
                           ),
                           IconButton(
                             icon: const FaIcon(FontAwesomeIcons.instagram),
-                            onPressed: () => {},
+                            onPressed: () => _launchURL(
+                                "https://www.instagram.com/instagram/"),
                           )
                         ],
                       ))
