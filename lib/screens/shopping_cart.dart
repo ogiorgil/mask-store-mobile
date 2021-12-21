@@ -30,11 +30,6 @@ class ShoppingCartForm extends StatefulWidget {
 class _ShoppingCartFormState extends State<ShoppingCartForm> {
   @override
   Widget build(BuildContext context) {
-    print(futureGet);
-    print(futureItemMaskerCart);
-    print(futureProductMaskerCart);
-    print(futureOrderCart);
-    print(futureCustomMaskerCart);
     return Scaffold(
         appBar: AppBar(
           title: Text('Shopping Cart'),
@@ -102,22 +97,39 @@ class _ProductViewState extends State<ProductCartView> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Center(
-            child: Text('Product Masker Cart is Empty'),
+            child: Text('Erro'),
           );
         } else if (snapshot.hasData) {
+          if (snapshot.data.toString().length == 2) {
+            return const Padding(
+                padding: const EdgeInsetsDirectional.only(top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                child: Center(
+                  child: Text('Product Masker Cart is Empty'),
+                )
+            );
+          }
           var futureProduct = snapshot.data;
           return FutureBuilder(
               future: futureItemMaskerCart,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text('Product Masker Cart is Empty'),
+                    child: Text('Error'),
                   );
                 } else if (snapshot.hasData) {
+                  if (snapshot.data.toString().length == 2) {
+                    return const Padding(
+                        padding: const EdgeInsetsDirectional.only(top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                        child: Center(
+                          child: Text('Product Masker Cart is Empty'),
+                        )
+                    );
+                  }
                   return _listProduct(futureProduct as List<ProductMaskerCart>, snapshot.data as List<ItemMaskerCart>);
                 }
                 // By default, show a loading spinner.
-                return const CircularProgressIndicator();              }
+                return const CircularProgressIndicator();
+              }
           );
           // return _listProduct(snapshot.data as List<ProductMaskerCart>);
         }
@@ -273,9 +285,17 @@ class _CustomViewState extends State<CustomCartView> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Center(
-            child: Text('Custom Masker Cart is Empty'),
+            child: Text('Error'),
           );
         } else if (snapshot.hasData) {
+          if (snapshot.data.toString().length == 2) {
+            return const Padding(
+                padding: const EdgeInsetsDirectional.only(top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                child: Center(
+                  child: Text('Custom Masker Cart is Empty'),
+                )
+            );
+          }
           return _listCustom(snapshot.data as List<CustomMaskerCart>);
         }
         // By default, show a loading spinner.
@@ -380,30 +400,53 @@ class MyCustomFormState extends State<MyCustomForm> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-              ),
-              onPressed: () async {
-                final response = await http.post(
-                    Uri.parse('http://127.0.0.1:8000/order_json/'),
-                    headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8'},
-                    body: jsonEncode(<String, String>{'note': note})
+          FutureBuilder<OrderCart>(
+            future: futureOrderCart,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text('Error'),
                 );
-                print(response);
-                print(response.body);
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ShoppingCartForm()),
+              } else if (snapshot.hasData) {
+                if (snapshot.data!.user == 0) {
+                  return const Padding(
+                      padding: const EdgeInsetsDirectional.only(top: 10.0, bottom: 10.0, start: 0.0, end: 0.0),
+                      child: Center(
+                        child: Text('Login first', style: TextStyle(color: Colors.red)),
+                      )
+                  );
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                    ),
+                    onPressed: () async {
+                      final response = await http.post(
+                          Uri.parse('http://127.0.0.1:8000/order_json/'),
+                          headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8'},
+                          body: jsonEncode(<String, String>{'note': note, 'user': snapshot.data!.user.toString()})
+                      );
+                      print(response);
+                      print(response.body);
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ShoppingCartForm()),
+                      );
+                      futureOrderCart = fetchOrderCart();
+                    },
+                    child: const Text('Simpan'),
+                  ),
                 );
-                futureOrderCart = fetchOrderCart();
-              },
-              child: const Text('Simpan'),
-            ),
+              }
+              // By default, show a loading spinner.
+              return const Center(
+                child: Text('None'),
+              );
+            },
           ),
         ],
       ),
@@ -415,8 +458,6 @@ class BillDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0);
-
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -429,7 +470,7 @@ class BillDetailView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Jumlah Item', style: textStyle),
+              Text('Jumlah Item', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0)),
               FutureBuilder<Get>(
                 future: futureGet,
                 builder: (context, snapshot) {
@@ -438,7 +479,7 @@ class BillDetailView extends StatelessWidget {
                       child: Text('Error'),
                     );
                   } else if (snapshot.hasData) {
-                    return Text(snapshot.data!.getItemsTotal.toString(), style: textStyle);
+                    return Text(snapshot.data!.getItemsTotal.toString(), style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0));
                   }
                   // By default, show a loading spinner.
                   return const CircularProgressIndicator();
@@ -450,7 +491,7 @@ class BillDetailView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Total Harga', style: textStyle),
+              Text('Total Harga', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0)),
               FutureBuilder<Get>(
                 future: futureGet,
                 builder: (context, snapshot) {
@@ -459,7 +500,7 @@ class BillDetailView extends StatelessWidget {
                       child: Text('Error'),
                     );
                   } else if (snapshot.hasData) {
-                    return Text("\$" + snapshot.data!.getPriceTotal.toString() + ".00", style: textStyle);
+                    return Text("\$" + snapshot.data!.getPriceTotal.toString() + ".00", style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0));
                   }
                   // By default, show a loading spinner.
                   return const CircularProgressIndicator();
@@ -471,7 +512,7 @@ class BillDetailView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Catatan', style: textStyle),
+              Text('Catatan', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0)),
               FutureBuilder<OrderCart>(
                 future: futureOrderCart,
                 builder: (context, snapshot) {
@@ -480,7 +521,15 @@ class BillDetailView extends StatelessWidget {
                       child: Text('None'),
                     );
                   } else if (snapshot.hasData) {
-                    return Text(snapshot.data!.note.toString(), style: textStyle);
+                    if (snapshot.data!.user == 0) {
+                      return const Padding(
+                          padding: const EdgeInsetsDirectional.only(top: 10.0, bottom: 10.0, start: 0.0, end: 0.0),
+                          child: Center(
+                            child: Text('Login first', style: TextStyle(color: Colors.red)),
+                          )
+                      );
+                    }
+                    return Text(snapshot.data!.note.toString(), style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0));
                   }
                   // By default, show a loading spinner.
                   return const CircularProgressIndicator();
