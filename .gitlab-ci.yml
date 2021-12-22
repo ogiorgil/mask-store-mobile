@@ -1,22 +1,21 @@
-image: cirrusci/flutter:1.22.4
+image: cirrusci/flutter:2.5.3
 
 stages:
-- build
+  - build
+  - deploy
 
 before_script:
-- export GRADLE_USER_HOME=$(pwd)/android/.gradle
-- mkdir -p ${GRADLE_USER_HOME}
-- echo ${GRADLE_PROPS} | base64 -d > ${GRADLE_USER_HOME}/gradle.properties
-- chmod +x android/gradlew
+  - export GRADLE_USER_HOME=$(pwd)/android/.gradle
+  - mkdir -p ${GRADLE_USER_HOME}
+  - echo ${GRADLE_PROPS} | base64 -d > ${GRADLE_USER_HOME}/gradle.properties
+  - chmod +x android/gradlew
 
 after_script:
-- rm -f ${GRADLE_USER_HOME}/gradle.properties
+  - rm -f ${GRADLE_USER_HOME}/gradle.properties
 
 flutter_build_android: #Job name
   stage: build # kind of job
   before_script:
-    - flutter channel stable
-    - flutter upgrade
     - flutter packages get
     - flutter clean
   script:

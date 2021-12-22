@@ -1,3 +1,4 @@
+![pipeline status](https://gitlab.com/pbp-c07/tugas-akhir/badges/main/pipeline.svg)
 # Tugas Kelompok Akhir PBP-C07
 
 ## Anggota Kelompok:
@@ -10,7 +11,8 @@
 - Marvel Krent - 2006596573
 
 # Link menuju download apk
-Download apk: https://gitlab.com/pbp-c07/tugas-akhir/-/blob/main/app-release.apk
+Download apk: https://gitlab.com/pbp-c07/tugas-akhir/-/jobs/artifacts/main/raw/build/app/outputs/apk/release/app-release.apk/?job=flutter_build_android
+
 
 # Daftar modul yang akan diimplementasikan:
 - Login page (Rasyad Jabbar Poncosewoyo - 2006596106)
