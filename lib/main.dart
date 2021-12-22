@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tugas_akhir/screens/widgets/wishlist_form_create.dart';
+import './screens/wishlist_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,13 +34,16 @@ class _MyAppState extends State<MyApp> {
       initialRoute: '/',
       routes: {
         // '/products: (context) => const ProductPage(),
+        // '/wishlist': (context) => const WishList(),
+        '/create': (context) => const WishlistForm(),
+        '/edit': (context) => const WishlistForm(),
       },
       home: Scaffold(
         appBar: AppBar(
           title: const Text("Tugas Akhir PBP-C07"),
           backgroundColor: Colors.black,
         ),
-        body: Container(), // home page taro sini
+        body: const WishList(), // home page taro sini
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
