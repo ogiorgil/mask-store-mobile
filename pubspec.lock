@@ -74,7 +74,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-<<<<<<< HEAD
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -87,8 +86,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "9.2.0"
-=======
->>>>>>> aff1010e111041bc421c014fa1f7150e8973b2e1
   http:
     dependency: "direct main"
     description:
@@ -103,7 +100,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-<<<<<<< HEAD
   js:
     dependency: transitive
     description:
@@ -111,8 +107,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
-=======
->>>>>>> aff1010e111041bc421c014fa1f7150e8973b2e1
   lints:
     dependency: transitive
     description:
@@ -274,7 +268,4 @@ packages:
     version: "2.1.0"
 sdks:
   dart: ">=2.14.0 <3.0.0"
-<<<<<<< HEAD
   flutter: ">=2.5.0"
-=======
->>>>>>> aff1010e111041bc421c014fa1f7150e8973b2e1
