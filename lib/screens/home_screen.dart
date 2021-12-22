@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import '../widgets/masker_item.dart';
 import '../models/masker.dart';
+import 'dart:io';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<List<Masker>?> fetchMasker() async {
     // test apakah gambar sudah di-fetch
     // mencegah request server saat screen di-build ulang karane perubahan contentFitur
-    if (isFetched) {
+    if (isFetched && maskers.isNotEmpty) {
       return maskers;
     }
     const url = 'https://pbp-c07.herokuapp.com/api/mobile/get-data/15';
