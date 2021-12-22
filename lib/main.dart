@@ -3,11 +3,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:tugas_akhir/screens/home_screen.dart';
 import 'package:tugas_akhir/screens/masker_detail_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+=======
+import 'package:tugas_akhir/screens/widgets/wishlist_form_create.dart';
+import './screens/wishlist_screen.dart';
+>>>>>>> aff1010e111041bc421c014fa1f7150e8973b2e1
 
 void main() {
   runApp(const MyApp());
@@ -61,16 +66,26 @@ class _MyAppState extends State<MyApp> {
       // initialRoute: '/',
       routes: {
         // '/products: (context) => const ProductPage(),
+<<<<<<< HEAD
         MaskerDetailScreen.routeName: (ctx) => const MaskerDetailScreen(),
+=======
+        // '/wishlist': (context) => const WishList(),
+        '/create': (context) => const WishlistForm(),
+        '/edit': (context) => const WishlistForm(),
+>>>>>>> aff1010e111041bc421c014fa1f7150e8973b2e1
       },
       home: Scaffold(
         appBar: AppBar(
           title: const Text("Tugas Akhir PBP-C07"),
           backgroundColor: Colors.black,
         ),
+<<<<<<< HEAD
         body: Container(
           child: HomeScreen(),
         ), // home page taro sini
+=======
+        body: const WishList(), // home page taro sini
+>>>>>>> aff1010e111041bc421c014fa1f7150e8973b2e1
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
