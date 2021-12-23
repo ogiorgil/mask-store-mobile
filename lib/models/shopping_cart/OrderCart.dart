@@ -52,6 +52,10 @@ class OrderCart {
   OrderCart({required this.id, required this.user, required this.complete, required this.note});
 
   factory OrderCart.fromJson(Map<String, dynamic> json) {
+    if (json.length == 0) {
+      return OrderCart(id: 0, user: 0, complete: true, note: '');
+    }
+
     if (json['note'] == null){
       json['note'] = "None";
     };
