@@ -10,7 +10,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tugas_akhir/screens/shopping_cart.dart';
 import 'package:tugas_akhir/screens/wishlist_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:tugas_akhir/widgets/wishlist_form_create.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,27 +29,28 @@ class _MyAppState extends State<MyApp> {
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
-  late Widget _widgetBody;
+  late Widget _scafBody;
+  late String _scafTitle;
 
   final List<Map<String, Object>> _pages = [
-    {
-      'page': const HomeScreen(),
-    },
+    {'page': const HomeScreen(), 'title': "Tugas Akhir PBP-C07"},
     {
       'page': const WishList(), //product
+      'title': "Products"
     },
   ];
   @override
   void initState() {
-    _widgetBody = _pages[_selectedIndex]['page'] as Widget;
-
+    _scafBody = _pages[_selectedIndex]['page'] as Widget;
+    _scafTitle = _pages[_selectedIndex]['title'].toString();
     super.initState();
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _widgetBody = _pages[index]['page'] as Widget;
+      _scafBody = _pages[index]['page'] as Widget;
+      _scafTitle = _pages[index]['title'].toString();
     });
   }
 
@@ -58,11 +58,22 @@ class _MyAppState extends State<MyApp> {
     'home': const HomeScreen(),
     'wishlist': const WishList(),
     'cart': const ShoppingCartForm(),
+    'customize': const HomeScreen(),
+    'products': const HomeScreen(),
+  };
+
+  final Map<String, String> _titles = {
+    'home': "Tugas Akhir PBP-C07",
+    'wishlist': 'Wishlist',
+    'cart': 'Shopping Cart',
+    'customize': 'Customize Masker',
+    'products': 'Products'
   };
 
   void _drawerTap(String page) {
     setState(() {
-      _widgetBody = _drawerPage[page] as Widget;
+      _scafBody = _drawerPage[page] as Widget;
+      _scafTitle = _titles[page].toString();
     });
   }
 
@@ -86,11 +97,11 @@ class _MyAppState extends State<MyApp> {
       },
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Tugas Akhir PBP-C07"),
+          title: Text(_scafTitle),
           backgroundColor: Colors.black,
         ),
         body: Container(
-          child: _widgetBody,
+          child: _scafBody,
         ), // home page taro sini
         drawer: Builder(
             builder: (context) => Drawer(
@@ -124,7 +135,7 @@ class _MyAppState extends State<MyApp> {
                         title: const Text("Products"),
                         onTap: () {
                           // do stuff
-                          _drawerTap("home");
+                          _drawerTap("products");
                           Navigator.pop(context);
                         },
                       ),
@@ -140,7 +151,7 @@ class _MyAppState extends State<MyApp> {
                         title: const Text("Customize Masker"),
                         onTap: () {
                           // do stuff
-                          _drawerTap("home");
+                          _drawerTap("customize");
                           Navigator.pop(context);
                         },
                       ),
