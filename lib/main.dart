@@ -7,8 +7,10 @@ import 'package:tugas_akhir/screens/home_screen.dart';
 import 'package:tugas_akhir/screens/masker_detail_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tugas_akhir/screens/shopping_cart.dart';
+import 'package:tugas_akhir/screens/wishlist_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:tugas_akhir/screens/widgets/wishlist_form_create.dart';
+import 'package:tugas_akhir/widgets/wishlist_form_create.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,6 +18,8 @@ void main() {
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+  static final GlobalKey<ScaffoldMessengerState> snackbarKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -26,33 +30,46 @@ class _MyAppState extends State<MyApp> {
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
+  late Widget _widgetBody;
 
-  final GlobalKey<ScaffoldMessengerState> snackbarKey =
-      GlobalKey<ScaffoldMessengerState>();
+  final List<Map<String, Object>> _pages = [
+    {
+      'page': const HomeScreen(),
+    },
+    {
+      'page': const WishList(), //product
+    },
+  ];
+  @override
+  void initState() {
+    _widgetBody = _pages[_selectedIndex]['page'] as Widget;
+
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _widgetBody = _pages[index]['page'] as Widget;
     });
   }
 
-  Future<http.Response> subsHandler(String email) {
-    return http.post(
-        Uri.parse('https://pbp-c07.herokuapp.com/api/mobile/subscribe'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{'email': email}));
-  }
+  final Map<String, Widget> _drawerPage = {
+    'home': const HomeScreen(),
+    'wishlist': const WishList(),
+    'cart': const ShoppingCartForm(),
+  };
 
-  void _launchURL(String url) async {
-    if (!await launch(url)) throw 'Could not launcg $url';
+  void _drawerTap(String page) {
+    setState(() {
+      _widgetBody = _drawerPage[page] as Widget;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      scaffoldMessengerKey: snackbarKey,
+      scaffoldMessengerKey: MyApp.snackbarKey,
       title: 'PBP-C07',
       theme: ThemeData(
         primaryColor: Colors.white,
@@ -63,6 +80,9 @@ class _MyAppState extends State<MyApp> {
       routes: {
         // '/products: (context) => const ProductPage(),
         MaskerDetailScreen.routeName: (ctx) => const MaskerDetailScreen(),
+        '/wishlist': (ctx) => const WishList(),
+        '/cart': (ctx) => const ShoppingCartForm(),
+        '/home': (ctx) => const HomeScreen(),
       },
       home: Scaffold(
         appBar: AppBar(
@@ -70,155 +90,178 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Colors.black,
         ),
         body: Container(
-          child: HomeScreen(),
+          child: _widgetBody,
         ), // home page taro sini
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                ),
-                child: Center(
-                  child: Text(
-                    "Welcome, user",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-              ListTile(
-                title: const Text("Home"),
-                onTap: () {
-                  // do stuff
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text("Products"),
-                onTap: () {
-                  // do stuff
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text("Wishlist"),
-                onTap: () {
-                  // do stuff
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text("Customize Masker"),
-                onTap: () {
-                  // do stuff
-                  Navigator.pop(context);
-                },
-              ),
-              Form(
-                  key: _formKey,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: emailController,
-                            decoration: InputDecoration(
-                              hintText: "abcd@example.com",
-                              labelText: "Email",
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
+        drawer: Builder(
+            builder: (context) => Drawer(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      const DrawerHeader(
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Welcome, user",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
                             ),
-                            validator: (value) {
-                              if (value!.isEmpty || !value.contains("@")) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            },
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20.0),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.green[900] as Color)),
-                            onPressed: () {
-                              // Validate returns true if the form is valid, or false otherwise.
-                              if (_formKey.currentState!.validate()) {
-                                subsHandler(emailController.text)
-                                    .then((response) {
-                                  String msg =
-                                      json.decode(response.body)["message"];
-                                  if (msg == "Thank You") {
-                                    msg = "Subscribed";
-                                  } else {
-                                    msg =
-                                        "You have already subscribe to our newletter";
-                                  }
-                                  snackbarKey.currentState?.showSnackBar(
-                                    SnackBar(
-                                      content: Text(msg),
+                      ),
+                      ListTile(
+                        title: const Text("Home"),
+                        onTap: () {
+                          // do stuff
+                          _drawerTap("home");
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("Products"),
+                        onTap: () {
+                          // do stuff
+                          _drawerTap("home");
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("Wishlist"),
+                        onTap: () {
+                          // do stuff
+                          _drawerTap("wishlist");
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("Customize Masker"),
+                        onTap: () {
+                          // do stuff
+                          _drawerTap("home");
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("Cart"),
+                        onTap: () {
+                          // do stuff
+                          _drawerTap("cart");
+                          Navigator.pop(context);
+                          // Navigator.of(context).pushReplacementNamed('/cart');
+                        },
+                      ),
+                      Form(
+                          key: _formKey,
+                          child: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextFormField(
+                                    controller: emailController,
+                                    decoration: InputDecoration(
+                                      hintText: "abcd@example.com",
+                                      labelText: "Email",
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0)),
                                     ),
-                                  );
-                                }).onError((error, stackTrace) {
-                                  snackbarKey.currentState
-                                      ?.showSnackBar(SnackBar(
-                                    content: Text(error.toString()),
-                                  ));
-                                });
-                              }
-                            },
-                            child: const Text('Subscribe'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )),
-              Container(
-                alignment: Alignment.bottomCenter,
-                padding: const EdgeInsets.all(20.0),
-                child: Column(children: [
-                  const Text("Contact Us",
-                      style: TextStyle(
-                        fontFamily: 'RobotoCondensed',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            icon: const FaIcon(FontAwesomeIcons.twitter),
-                            onPressed: () =>
-                                _launchURL("https://twitter.com/twitter"),
-                          ),
-                          IconButton(
-                            icon: const FaIcon(FontAwesomeIcons.facebook),
-                            onPressed: () => _launchURL(
-                                "https://web.facebook.com/MetaIndonesia/?brand_redir=108824017345866"),
-                          ),
-                          IconButton(
-                            icon: const FaIcon(FontAwesomeIcons.instagram),
-                            onPressed: () => _launchURL(
-                                "https://www.instagram.com/instagram/"),
-                          )
-                        ],
-                      ))
-                ]),
-              )
-            ],
-          ),
-        ),
+                                    validator: (value) {
+                                      if (value!.isEmpty ||
+                                          !value.contains("@")) {
+                                        return 'Please enter a valid email';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.green[900] as Color)),
+                                    onPressed: () {
+                                      // Validate returns true if the form is valid, or false otherwise.
+                                      if (_formKey.currentState!.validate()) {
+                                        subsHandler(emailController.text)
+                                            .then((response) {
+                                          String msg = json
+                                              .decode(response.body)["message"];
+                                          if (msg == "Thank You") {
+                                            msg = "Subscribed";
+                                            emailController.clear();
+                                          } else {
+                                            msg =
+                                                "You have already subscribed to our newletter";
+                                          }
+                                          MyApp.snackbarKey.currentState
+                                              ?.showSnackBar(
+                                            SnackBar(
+                                              content: Text(msg),
+                                            ),
+                                          );
+                                        }).onError((error, stackTrace) {
+                                          MyApp.snackbarKey.currentState
+                                              ?.showSnackBar(SnackBar(
+                                            content: Text(error.toString()),
+                                          ));
+                                        });
+                                      }
+                                    },
+                                    child: const Text('Subscribe'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(children: [
+                          const Text("Contact Us",
+                              style: TextStyle(
+                                fontFamily: 'RobotoCondensed',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon:
+                                        const FaIcon(FontAwesomeIcons.twitter),
+                                    onPressed: () => _launchURL(
+                                        "https://twitter.com/twitter"),
+                                  ),
+                                  IconButton(
+                                    icon:
+                                        const FaIcon(FontAwesomeIcons.facebook),
+                                    onPressed: () => _launchURL(
+                                        "https://web.facebook.com/MetaIndonesia/?brand_redir=108824017345866"),
+                                  ),
+                                  IconButton(
+                                    icon: const FaIcon(
+                                        FontAwesomeIcons.instagram),
+                                    onPressed: () => _launchURL(
+                                        "https://www.instagram.com/instagram/"),
+                                  )
+                                ],
+                              ))
+                        ]),
+                      )
+                    ],
+                  ),
+                )),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -236,5 +279,18 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  Future<http.Response> subsHandler(String email) {
+    return http.post(
+        Uri.parse('https://pbp-c07.herokuapp.com/api/mobile/subscribe'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{'email': email}));
+  }
+
+  void _launchURL(String url) async {
+    if (!await launch(url)) throw 'Could not launcg $url';
   }
 }

@@ -15,9 +15,11 @@ import 'package:tugas_akhir/utils/ui_helper.dart';
 import 'package:tugas_akhir/widgets/veg_badge_view.dart';
 
 late Future<List<ItemMaskerCart>?> futureItemMaskerCart = fetchItemMaskerCart();
-late Future<List<ProductMaskerCart>?> futureProductMaskerCart = fetchProductCart();
+late Future<List<ProductMaskerCart>?> futureProductMaskerCart =
+    fetchProductCart();
 late Future<OrderCart> futureOrderCart = fetchOrderCart();
-late Future<List<CustomMaskerCart>?> futureCustomMaskerCart = fetchCustomMaskerCart();
+late Future<List<CustomMaskerCart>?> futureCustomMaskerCart =
+    fetchCustomMaskerCart();
 late Future<Get> futureGet = fetchGet();
 
 class ShoppingCartForm extends StatefulWidget {
@@ -30,57 +32,55 @@ class ShoppingCartForm extends StatefulWidget {
 class _ShoppingCartFormState extends State<ShoppingCartForm> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Shopping Cart'),
-          backgroundColor: Colors.black87,
-        ),
-        body: SafeArea(
-            child: Container(
-                margin: const EdgeInsets.all(10.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return SafeArea(
+        child: Container(
+            margin: const EdgeInsets.all(10.0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.masks_rounded, size: 20.0),
-                          UIHelper.horizontalSpaceSmall(),
-                          Text(
-                            'Product Masker Cart',
-                            style: Theme.of(context).textTheme.headline4!.copyWith(fontSize: 20.0),
-                          )
-                        ],
-                      ),
-                      UIHelper.verticalSpaceMedium(),
-                      ProductCartView(),
-                      _DecoratedView(),
-                      UIHelper.verticalSpaceMedium(),
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.masks_rounded, size: 20.0),
-                          UIHelper.horizontalSpaceSmall(),
-                          Text(
-                            'Custom Masker Cart',
-                            style: Theme.of(context).textTheme.headline4!.copyWith(fontSize: 20.0),
-                          )
-                        ],
-                      ),
-                      UIHelper.verticalSpaceMedium(),
-                      CustomCartView(),
-                      _DecoratedView(),
-                      MyCustomForm(),
-                      _DecoratedView(),
-                      UIHelper.verticalSpaceMedium(),
-                      BillDetailView(),
-                      CheckoutView()
+                      Icon(Icons.masks_rounded, size: 20.0),
+                      UIHelper.horizontalSpaceSmall(),
+                      Text(
+                        'Product Masker Cart',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4!
+                            .copyWith(fontSize: 20.0),
+                      )
                     ],
                   ),
-                )
-            )
-        )
-    );
+                  UIHelper.verticalSpaceMedium(),
+                  ProductCartView(),
+                  _DecoratedView(),
+                  UIHelper.verticalSpaceMedium(),
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.masks_rounded, size: 20.0),
+                      UIHelper.horizontalSpaceSmall(),
+                      Text(
+                        'Custom Masker Cart',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4!
+                            .copyWith(fontSize: 20.0),
+                      )
+                    ],
+                  ),
+                  UIHelper.verticalSpaceMedium(),
+                  CustomCartView(),
+                  _DecoratedView(),
+                  MyCustomForm(),
+                  _DecoratedView(),
+                  UIHelper.verticalSpaceMedium(),
+                  BillDetailView(),
+                  CheckoutView()
+                ],
+              ),
+            )));
   }
 }
 
@@ -102,11 +102,11 @@ class _ProductViewState extends State<ProductCartView> {
         } else if (snapshot.hasData) {
           if (snapshot.data.toString().length == 2) {
             return const Padding(
-                padding: const EdgeInsetsDirectional.only(top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                padding: const EdgeInsetsDirectional.only(
+                    top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
                 child: Center(
                   child: Text('Product Masker Cart is Empty'),
-                )
-            );
+                ));
           }
           var futureProduct = snapshot.data;
           return FutureBuilder(
@@ -119,18 +119,18 @@ class _ProductViewState extends State<ProductCartView> {
                 } else if (snapshot.hasData) {
                   if (snapshot.data.toString().length == 2) {
                     return const Padding(
-                        padding: const EdgeInsetsDirectional.only(top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                        padding: const EdgeInsetsDirectional.only(
+                            top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
                         child: Center(
                           child: Text('Product Masker Cart is Empty'),
-                        )
-                    );
+                        ));
                   }
-                  return _listProduct(futureProduct as List<ProductMaskerCart>, snapshot.data as List<ItemMaskerCart>);
+                  return _listProduct(futureProduct as List<ProductMaskerCart>,
+                      snapshot.data as List<ItemMaskerCart>);
                 }
                 // By default, show a loading spinner.
                 return const CircularProgressIndicator();
-              }
-          );
+              });
           // return _listProduct(snapshot.data as List<ProductMaskerCart>);
         }
         // By default, show a loading spinner.
@@ -139,7 +139,8 @@ class _ProductViewState extends State<ProductCartView> {
     );
   }
 
-  Widget _listProduct(List<ProductMaskerCart> products, List<ItemMaskerCart> items) {
+  Widget _listProduct(
+      List<ProductMaskerCart> products, List<ItemMaskerCart> items) {
     double field = 130;
     return Container(
       height: field * items.length,
@@ -154,27 +155,35 @@ class _ProductViewState extends State<ProductCartView> {
                 Row(
                   children: <Widget>[
                     Image.network(
-                      'http://res.cloudinary.com/dvfyxrw6z/' + product!.image.toString(),
+                      'http://res.cloudinary.com/dvfyxrw6z/' +
+                          product!.image.toString(),
                       height: 60.0,
                       width: 60.0,
                     ),
                     UIHelper.horizontalSpaceSmall(),
                     Column(
                       children: <Widget>[
-                        Text(product.nama.toString(), style: Theme.of(context).textTheme.subtitle2),
+                        Text(product.nama.toString(),
+                            style: Theme.of(context).textTheme.subtitle2),
                       ],
                     ),
                     Spacer(),
                     ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
                       ),
                       onPressed: () async {
                         final response = await http.post(
                             Uri.parse('http://127.0.0.1:8000/item_json/'),
-                            headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8'},
-                            body: jsonEncode(<String, String>{'order': item!.order.toString(),'product': item.product.toString(), 'quantity': 0.toString()})
-                        );
+                            headers: <String, String>{
+                              'Content-Type': 'application/json; charset=UTF-8'
+                            },
+                            body: jsonEncode(<String, String>{
+                              'order': item!.order.toString(),
+                              'product': item.product.toString(),
+                              'quantity': 0.toString()
+                            }));
                         print(response);
                         print(response.body);
                         Navigator.pop(context);
@@ -187,7 +196,8 @@ class _ProductViewState extends State<ProductCartView> {
                         futureProductMaskerCart = fetchProductCart();
                         futureGet = fetchGet();
                       },
-                      child: const Icon(Icons.close, size: 20.0, color: Colors.white),
+                      child: const Icon(Icons.close,
+                          size: 20.0, color: Colors.white),
                     ),
                   ],
                 ),
@@ -196,7 +206,8 @@ class _ProductViewState extends State<ProductCartView> {
                   children: <Widget>[
                     VegBadgeView(),
                     UIHelper.horizontalSpaceSmall(),
-                    Text('\$' + product.harga.toString() + '.00', style: Theme.of(context).textTheme.subtitle2),
+                    Text('\$' + product.harga.toString() + '.00',
+                        style: Theme.of(context).textTheme.subtitle2),
                     Spacer(),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -221,7 +232,11 @@ class _ProductViewState extends State<ProductCartView> {
                             },
                           ),
                           Spacer(),
-                          Text(item!.quantity.toString(), style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 16.0)),
+                          Text(item!.quantity.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2!
+                                  .copyWith(fontSize: 16.0)),
                           Spacer(),
                           InkWell(
                             child: Icon(Icons.add, color: Colors.green),
@@ -237,14 +252,20 @@ class _ProductViewState extends State<ProductCartView> {
                     UIHelper.horizontalSpaceSmall(),
                     ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.green),
                       ),
                       onPressed: () async {
                         final response = await http.post(
                             Uri.parse('http://127.0.0.1:8000/item_json/'),
-                            headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8'},
-                            body: jsonEncode(<String, String>{'order': item.order.toString(), 'product': item.product.toString(), 'quantity': item.quantity.toString()})
-                        );
+                            headers: <String, String>{
+                              'Content-Type': 'application/json; charset=UTF-8'
+                            },
+                            body: jsonEncode(<String, String>{
+                              'order': item.order.toString(),
+                              'product': item.product.toString(),
+                              'quantity': item.quantity.toString()
+                            }));
                         print(response);
                         print(response.body);
                         Navigator.pop(context);
@@ -268,7 +289,6 @@ class _ProductViewState extends State<ProductCartView> {
       ),
     );
   }
-
 }
 
 class CustomCartView extends StatefulWidget {
@@ -277,7 +297,6 @@ class CustomCartView extends StatefulWidget {
 }
 
 class _CustomViewState extends State<CustomCartView> {
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -290,11 +309,11 @@ class _CustomViewState extends State<CustomCartView> {
         } else if (snapshot.hasData) {
           if (snapshot.data.toString().length == 2) {
             return const Padding(
-                padding: const EdgeInsetsDirectional.only(top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                padding: const EdgeInsetsDirectional.only(
+                    top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
                 child: Center(
                   child: Text('Custom Masker Cart is Empty'),
-                )
-            );
+                ));
           }
           return _listCustom(snapshot.data as List<CustomMaskerCart>);
         }
@@ -320,14 +339,16 @@ class _CustomViewState extends State<CustomCartView> {
                 Row(
                   children: <Widget>[
                     Image.network(
-                      'http://res.cloudinary.com/dvfyxrw6z/' + custom!.style.toString(),
+                      'http://res.cloudinary.com/dvfyxrw6z/' +
+                          custom!.style.toString(),
                       height: 60.0,
                       width: 60.0,
                     ),
                     UIHelper.horizontalSpaceSmall(),
                     Column(
                       children: <Widget>[
-                        Text(custom.model.toString() + " MASKER", style: Theme.of(context).textTheme.subtitle2),
+                        Text(custom.model.toString() + " MASKER",
+                            style: Theme.of(context).textTheme.subtitle2),
                       ],
                     )
                   ],
@@ -337,23 +358,31 @@ class _CustomViewState extends State<CustomCartView> {
                   children: <Widget>[
                     Text('Sex:', style: Theme.of(context).textTheme.subtitle2),
                     UIHelper.horizontalSpaceSmall(),
-                    Text(custom.sex.toString(), style: Theme.of(context).textTheme.subtitle2),
+                    Text(custom.sex.toString(),
+                        style: Theme.of(context).textTheme.subtitle2),
                     UIHelper.horizontalSpaceMedium(),
                     Text('Size:', style: Theme.of(context).textTheme.subtitle2),
                     UIHelper.horizontalSpaceSmall(),
-                    Text(custom.size.toString(), style: Theme.of(context).textTheme.subtitle2),
+                    Text(custom.size.toString(),
+                        style: Theme.of(context).textTheme.subtitle2),
                     UIHelper.horizontalSpaceMedium(),
-                    Text('Color:', style: Theme.of(context).textTheme.subtitle2),
+                    Text('Color:',
+                        style: Theme.of(context).textTheme.subtitle2),
                     UIHelper.horizontalSpaceSmall(),
-                    Text(custom.color.toString(), style: Theme.of(context).textTheme.subtitle2),
+                    Text(custom.color.toString(),
+                        style: Theme.of(context).textTheme.subtitle2),
                     UIHelper.horizontalSpaceMedium(),
-                    Text('Price:', style: Theme.of(context).textTheme.subtitle2),
+                    Text('Price:',
+                        style: Theme.of(context).textTheme.subtitle2),
                     UIHelper.horizontalSpaceSmall(),
-                    Text('\$' + custom.price.toString() + ".00", style: Theme.of(context).textTheme.subtitle2),
+                    Text('\$' + custom.price.toString() + ".00",
+                        style: Theme.of(context).textTheme.subtitle2),
                     UIHelper.horizontalSpaceMedium(),
-                    Text('Quantity:', style: Theme.of(context).textTheme.subtitle2),
+                    Text('Quantity:',
+                        style: Theme.of(context).textTheme.subtitle2),
                     UIHelper.horizontalSpaceSmall(),
-                    Text(custom.quantity.toString(), style: Theme.of(context).textTheme.subtitle2),
+                    Text(custom.quantity.toString(),
+                        style: Theme.of(context).textTheme.subtitle2),
                   ],
                 ),
                 UIHelper.verticalSpaceMedium(),
@@ -376,20 +405,18 @@ class MyCustomForm extends StatefulWidget {
 }
 
 class MyCustomFormState extends State<MyCustomForm> {
-
   final _formKey = GlobalKey<FormState>();
   String note = "";
 
   @override
   Widget build(BuildContext context) {
-
     return Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB( 20, 0, 20, 0),
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: TextFormField(
               onChanged: (String value) {
                 note = value;
@@ -410,24 +437,30 @@ class MyCustomFormState extends State<MyCustomForm> {
               } else if (snapshot.hasData) {
                 if (snapshot.data!.user == 0) {
                   return const Padding(
-                      padding: const EdgeInsetsDirectional.only(top: 10.0, bottom: 10.0, start: 0.0, end: 0.0),
+                      padding: const EdgeInsetsDirectional.only(
+                          top: 10.0, bottom: 10.0, start: 0.0, end: 0.0),
                       child: Center(
-                        child: Text('Login first', style: TextStyle(color: Colors.red)),
-                      )
-                  );
+                        child: Text('Login first',
+                            style: TextStyle(color: Colors.red)),
+                      ));
                 }
                 return Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.green),
                     ),
                     onPressed: () async {
                       final response = await http.post(
                           Uri.parse('http://127.0.0.1:8000/order_json/'),
-                          headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8'},
-                          body: jsonEncode(<String, String>{'note': note, 'user': snapshot.data!.user.toString()})
-                      );
+                          headers: <String, String>{
+                            'Content-Type': 'application/json; charset=UTF-8'
+                          },
+                          body: jsonEncode(<String, String>{
+                            'note': note,
+                            'user': snapshot.data!.user.toString()
+                          }));
                       print(response);
                       print(response.body);
                       Navigator.pop(context);
@@ -455,7 +488,6 @@ class MyCustomFormState extends State<MyCustomForm> {
 }
 
 class BillDetailView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -464,13 +496,18 @@ class BillDetailView extends StatelessWidget {
         children: <Widget>[
           Text(
             'Ringkasan',
-            style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 17.0),
+            style:
+                Theme.of(context).textTheme.headline6!.copyWith(fontSize: 17.0),
           ),
           UIHelper.verticalSpaceMedium(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Jumlah Item', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0)),
+              Text('Jumlah Item',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(fontSize: 16.0)),
               FutureBuilder<Get>(
                 future: futureGet,
                 builder: (context, snapshot) {
@@ -479,7 +516,11 @@ class BillDetailView extends StatelessWidget {
                       child: Text('Error'),
                     );
                   } else if (snapshot.hasData) {
-                    return Text(snapshot.data!.getItemsTotal.toString(), style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0));
+                    return Text(snapshot.data!.getItemsTotal.toString(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontSize: 16.0));
                   }
                   // By default, show a loading spinner.
                   return const CircularProgressIndicator();
@@ -491,7 +532,11 @@ class BillDetailView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Total Harga', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0)),
+              Text('Total Harga',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(fontSize: 16.0)),
               FutureBuilder<Get>(
                 future: futureGet,
                 builder: (context, snapshot) {
@@ -500,7 +545,12 @@ class BillDetailView extends StatelessWidget {
                       child: Text('Error'),
                     );
                   } else if (snapshot.hasData) {
-                    return Text("\$" + snapshot.data!.getPriceTotal.toString() + ".00", style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0));
+                    return Text(
+                        "\$" + snapshot.data!.getPriceTotal.toString() + ".00",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontSize: 16.0));
                   }
                   // By default, show a loading spinner.
                   return const CircularProgressIndicator();
@@ -512,7 +562,11 @@ class BillDetailView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Catatan', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0)),
+              Text('Catatan',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(fontSize: 16.0)),
               FutureBuilder<OrderCart>(
                 future: futureOrderCart,
                 builder: (context, snapshot) {
@@ -523,13 +577,18 @@ class BillDetailView extends StatelessWidget {
                   } else if (snapshot.hasData) {
                     if (snapshot.data!.user == 0) {
                       return const Padding(
-                          padding: const EdgeInsetsDirectional.only(top: 10.0, bottom: 10.0, start: 0.0, end: 0.0),
+                          padding: const EdgeInsetsDirectional.only(
+                              top: 10.0, bottom: 10.0, start: 0.0, end: 0.0),
                           child: Center(
-                            child: Text('Login first', style: TextStyle(color: Colors.red)),
-                          )
-                      );
+                            child: Text('Login first',
+                                style: TextStyle(color: Colors.red)),
+                          ));
                     }
-                    return Text(snapshot.data!.note.toString(), style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0));
+                    return Text(snapshot.data!.note.toString(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontSize: 16.0));
                   }
                   // By default, show a loading spinner.
                   return const CircularProgressIndicator();
@@ -571,7 +630,10 @@ class CheckoutView extends StatelessWidget {
                   height: 58.0,
                   child: Text(
                     'CHECKOUT',
-                    style: Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.white),
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2!
+                        .copyWith(color: Colors.white),
                   ),
                 ),
               )

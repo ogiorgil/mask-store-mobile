@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import '../widgets/masker_item.dart';
 import '../models/masker.dart';
-import 'dart:io';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -46,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isFetched && maskers.isNotEmpty) {
       return maskers;
     }
-    const url = 'https://pbp-c07.herokuapp.com/api/mobile/get-data/15';
+    const url = 'https://pbp-c07.herokuapp.com/api/mobile/get-data/6';
     try {
       final response = await http.get(Uri.parse(url));
       maskers = List.empty(growable: true);
@@ -59,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    if (pertamax) {
+    if (pertamax && mounted) {
       setState(() {
         _opacity1 = 1;
         pertamax = false;
@@ -71,6 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void fade() {
     Timer.periodic(Duration(milliseconds: _duration * 1000), (timer) {
+      if (!mounted) {
+        timer.cancel;
+        return;
+      }
       Timer(const Duration(milliseconds: 495), () {
         setState(() {
           counter = (counter + 1) % 3;
