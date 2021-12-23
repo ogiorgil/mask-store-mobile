@@ -7,21 +7,27 @@ import 'widgets/simple_table_page.dart';
 import '../models/wishlist_item.dart';
 
 Future<List<WishlistItem>> fetchItems() async {
-  const url = 'http://localhost:8000/request-data';
+  const url = 'localhost:8000/request-data/';
   List<WishlistItem> items = [];
+  Map<String, String> session = {};
+  session = await login();
+  print(session);
   try {
+    String uid = session["user_id"].toString();
+    String request = session["request"].toString();
+
+    var requestUrl = "http://localhost:8000/request-data/?owner_id=1";
+
     final response = await http.get(
-      Uri.parse(url),
+      Uri.parse(requestUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
     );
-    // print(response.body);
+    print("FETCHITEMS RESPONSE " + response.body);
     List<dynamic> extractedData = jsonDecode(response.body);
     extractedData.forEach((map) {
       Map<String, dynamic> fields = map["fields"];
-      // List<String> temp = [];
-      // fields.forEach((vkey, vvalue) {
-      //   temp.add(vvalue.toString());
-      // });
-      // data.add(temp);
       items.add(WishlistItem.fromJson(fields));
     });
   } catch (error) {
@@ -30,32 +36,45 @@ Future<List<WishlistItem>> fetchItems() async {
   return Future.value(items);
 }
 
-class WishList extends StatefulWidget {
-  const WishList({Key? key}) : super(key: key);
-
-  List<List<String>> makeData() {
-    final List<List<String>> output = [];
-
-    List<String> r = [];
-    r.add("1");
-    r.add("2");
-
-    output.add(r);
-    output.add(r);
-
-    return output;
+Future<Map<String, String>> login() async {
+  const url = 'http://localhost:8000/flutter-login/';
+  Map<String, String> session = {};
+  try {
+    final response = await http.post(Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'username': 'davidalexander',
+          'password': 'davidalexander',
+        }));
+    Map<String, dynamic> data = jsonDecode(response.body);
+    print(data);
+    if (data["status"] == true) {
+      session["username"] = data["username"];
+      session["user_id"] = data["user_id"].toString();
+    }
+  } catch (error) {
+    print(error);
   }
 
+  return session;
+}
+
+class WishList extends StatefulWidget {
+  const WishList({Key? key}) : super(key: key);
   @override
   _WishListState createState() => _WishListState();
 }
 
 class _WishListState extends State<WishList> {
   late Future<List<WishlistItem>> futureItems;
+  late Future<Map<String, String>> session;
 
   @override
   void initState() {
     super.initState();
+    session = login();
     futureItems = fetchItems();
   }
 
