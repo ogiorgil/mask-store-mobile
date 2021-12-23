@@ -12,13 +12,6 @@ class CustomMaskerCart {
       fields : json['fields'] != null ? new Fields.fromJson(json['fields']) : null,
     );
   }
-
-  dynamic toJson() => {
-    'model' : model,
-    'pk' : pk,
-    'fields' : fields != null ? fields!.toJson() : null,
-  };
-
 }
 
 class Fields {
@@ -54,15 +47,4 @@ class Fields {
       order : json['order'],
     );
   }
-
-  dynamic toJson() => {
-    'sex' : sex,
-    'size' : size,
-    'model' : model,
-    'color' : color,
-    'style' : style,
-    'price' : price,
-    'quantity' : quantity,
-    'order' : order,
-  };
 }

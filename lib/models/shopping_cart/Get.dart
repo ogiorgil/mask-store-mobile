@@ -13,9 +13,4 @@ class Get {
       getItemsTotal : json['get_items_total'],
     );
   }
-
-  dynamic toJson() => {
-    'get_price_total' : getPriceTotal,
-    'get_items_total' : getItemsTotal,
-  };
 }

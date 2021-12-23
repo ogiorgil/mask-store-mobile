@@ -16,12 +16,6 @@ class ProductMaskerCart {
       fields : json['fields'] != null ? new Fields.fromJson(json['fields']) : null,
     );
   }
-
-  dynamic toJson() => {
-    'model' : model,
-    'pk' : pk,
-    'fields' : fields != null ? fields!.toJson() : null,
-  };
 }
 
 class Fields {
@@ -51,13 +45,4 @@ class Fields {
       image : json['image'],
     );
   }
-
-  dynamic toJson() => {
-    'nama' : nama,
-    'rating' : rating,
-    'deskripsi' : deskripsi,
-    'harga' : harga,
-    'stok' : stok,
-    'image' : image,
-  };
 }
