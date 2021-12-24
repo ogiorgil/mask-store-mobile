@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:tugas_akhir/models/shopping_cart/CustomMaskerCart.dart';
 
 Future<List<CustomMaskerCart>?> fetchCustomMaskerCart() async {
-  final response = await http.get(Uri.parse('http://127.0.0.1:8000/custom_json/'));
+  final response = await http.get(Uri.parse('https://pbp-c07.herokuapp.com/custom_json/'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,

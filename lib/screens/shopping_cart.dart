@@ -11,6 +11,7 @@ import 'package:tugas_akhir/models/shopping_cart/Get.dart';
 import 'package:tugas_akhir/models/shopping_cart/ItemMaskerCart.dart';
 import 'package:tugas_akhir/models/shopping_cart/OrderCart.dart';
 import 'package:tugas_akhir/models/shopping_cart/ProductMaskerCart.dart';
+import 'package:tugas_akhir/screens/masker_detail_screen.dart';
 import 'package:tugas_akhir/utils/ui_helper.dart';
 import 'package:tugas_akhir/widgets/veg_badge_view.dart';
 
@@ -60,8 +61,12 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                     future: futureProductMaskerCart,
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
-                        return const Center(
-                          child: Text('Erro'),
+                        return const Padding(
+                            padding: const EdgeInsetsDirectional.only(
+                                top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                            child: Center(
+                              child: Text('Error'),
+                            )
                         );
                       } else if (snapshot.hasData) {
                         if (snapshot.data.toString().length == 2) {
@@ -70,15 +75,20 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                   top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
                               child: Center(
                                 child: Text('Product Masker Cart is Empty'),
-                              ));
+                              )
+                          );
                         }
                         var futureProduct = snapshot.data;
                         return FutureBuilder(
                             future: futureItemMaskerCart,
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
-                                return const Center(
-                                  child: Text('Error'),
+                                return const Padding(
+                                    padding: const EdgeInsetsDirectional.only(
+                                        top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                                    child: Center(
+                                      child: Text('Error'),
+                                    )
                                 );
                               } else if (snapshot.hasData) {
                                 if (snapshot.data.toString().length == 2) {
@@ -122,8 +132,12 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                     future: futureCustomMaskerCart,
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
-                        return const Center(
-                          child: Text('Error'),
+                        return const Padding(
+                            padding: const EdgeInsetsDirectional.only(
+                                top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                            child: Center(
+                              child: Text('Error'),
+                            )
                         );
                       } else if (snapshot.hasData) {
                         if (snapshot.data.toString().length == 2) {
@@ -163,8 +177,12 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                           future: futureOrderCart,
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
-                              return const Center(
-                                child: Text('Error'),
+                              return const Padding(
+                                  padding: const EdgeInsetsDirectional.only(
+                                      top: 10.0, bottom: 10.0, start: 0.0, end: 0.0),
+                                  child: Center(
+                                    child: Text('Error'),
+                                  )
                               );
                             } else if (snapshot.hasData) {
                               if (snapshot.data!.user == 0) {
@@ -297,7 +315,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   return const Center(
-                                    child: Text('None'),
+                                    child: Text('Error'),
                                   );
                                 } else if (snapshot.hasData) {
                                   if (snapshot.data!.user == 0) {
@@ -336,14 +354,19 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                               child: Container(
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.all(10.0),
-                                color: Colors.green,
                                 height: 58.0,
-                                child: Text(
-                                  'CHECKOUT',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle2!
-                                      .copyWith(color: Colors.white),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.green,
+                                    fixedSize: const Size(240, 80),
+                                  ),
+                                  onPressed: () async {
+                                    Navigator.of(context).pushNamed(
+                                      MaskerDetailScreen.routeName,
+                                      arguments: 1
+                                    );
+                                  },
+                                  child: const Text('CHECKOUT'),
                                 ),
                               ),
                             )
@@ -351,7 +374,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                         )
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             )
@@ -528,7 +551,33 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                         Text(custom.model.toString() + " MASKER",
                             style: Theme.of(context).textTheme.subtitle2),
                       ],
-                    )
+                    ),
+                    Spacer(),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                      ),
+                      onPressed: () async {
+                        final response = await http.post(
+                            Uri.parse('http://127.0.0.1:8000/custom_json/'),
+                            headers: <String, String>{
+                              'Content-Type': 'application/json; charset=UTF-8'
+                            },
+                            body: jsonEncode(<String, String>{
+                              'order': custom.order.toString(),
+                              'index': index.toString()
+                            }));
+                        print(response);
+                        print(response.body);
+                        setState(() {
+                          futureCustomMaskerCart = fetchCustomMaskerCart();
+                          futureGet = fetchGet();
+                        });
+                      },
+                      child: const Icon(Icons.close,
+                          size: 20.0, color: Colors.white),
+                    ),
                   ],
                 ),
                 UIHelper.verticalSpaceSmall(),
