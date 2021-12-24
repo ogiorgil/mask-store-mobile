@@ -24,9 +24,12 @@ class ShoppingCartForm extends StatefulWidget {
 
 class _ShoppingCartFormState extends State<ShoppingCartForm> {
   late Future<OrderCart> futureOrderCart = fetchOrderCart();
-  late Future<List<ItemMaskerCart>?> futureItemMaskerCart = fetchItemMaskerCart();
-  late Future<List<ProductMaskerCart>?> futureProductMaskerCart = fetchProductCart();
-  late Future<List<CustomMaskerCart>?> futureCustomMaskerCart = fetchCustomMaskerCart();
+  late Future<List<ItemMaskerCart>?> futureItemMaskerCart =
+      fetchItemMaskerCart();
+  late Future<List<ProductMaskerCart>?> futureProductMaskerCart =
+      fetchProductCart();
+  late Future<List<CustomMaskerCart>?> futureCustomMaskerCart =
+      fetchCustomMaskerCart();
   late Future<Get> futureGet = fetchGet();
 
   final _formKey = GlobalKey<FormState>();
@@ -34,7 +37,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Material(
         child: Container(
             margin: const EdgeInsets.all(10.0),
             child: SingleChildScrollView(
@@ -66,8 +69,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                 top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
                             child: Center(
                               child: Text('Error'),
-                            )
-                        );
+                            ));
                       } else if (snapshot.hasData) {
                         if (snapshot.data.toString().length == 2) {
                           return const Padding(
@@ -75,8 +77,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                   top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
                               child: Center(
                                 child: Text('Product Masker Cart is Empty'),
-                              )
-                          );
+                              ));
                         }
                         var futureProduct = snapshot.data;
                         return FutureBuilder(
@@ -85,21 +86,28 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                               if (snapshot.hasError) {
                                 return const Padding(
                                     padding: EdgeInsetsDirectional.only(
-                                        top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                                        top: 0.0,
+                                        bottom: 10.0,
+                                        start: 0.0,
+                                        end: 0.0),
                                     child: Center(
                                       child: Text('Error'),
-                                    )
-                                );
+                                    ));
                               } else if (snapshot.hasData) {
                                 if (snapshot.data.toString().length == 2) {
                                   return const Padding(
                                       padding: EdgeInsetsDirectional.only(
-                                          top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
+                                          top: 0.0,
+                                          bottom: 10.0,
+                                          start: 0.0,
+                                          end: 0.0),
                                       child: Center(
-                                        child: Text('Product Masker Cart is Empty'),
+                                        child: Text(
+                                            'Product Masker Cart is Empty'),
                                       ));
                                 }
-                                return _listProduct(futureProduct as List<ProductMaskerCart>,
+                                return _listProduct(
+                                    futureProduct as List<ProductMaskerCart>,
                                     snapshot.data as List<ItemMaskerCart>);
                               }
                               // By default, show a loading spinner.
@@ -137,8 +145,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                 top: 0.0, bottom: 10.0, start: 0.0, end: 0.0),
                             child: Center(
                               child: Text('Error'),
-                            )
-                        );
+                            ));
                       } else if (snapshot.hasData) {
                         if (snapshot.data.toString().length == 2) {
                           return const Padding(
@@ -148,7 +155,8 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                 child: Text('Custom Masker Cart is Empty'),
                               ));
                         }
-                        return _listCustom(snapshot.data as List<CustomMaskerCart>);
+                        return _listCustom(
+                            snapshot.data as List<CustomMaskerCart>);
                       }
                       // By default, show a loading spinner.
                       return const CircularProgressIndicator();
@@ -179,16 +187,21 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                             if (snapshot.hasError) {
                               return const Padding(
                                   padding: EdgeInsetsDirectional.only(
-                                      top: 10.0, bottom: 10.0, start: 0.0, end: 0.0),
+                                      top: 10.0,
+                                      bottom: 10.0,
+                                      start: 0.0,
+                                      end: 0.0),
                                   child: Center(
                                     child: Text('Error'),
-                                  )
-                              );
+                                  ));
                             } else if (snapshot.hasData) {
                               if (snapshot.data!.user == 0) {
                                 return const Padding(
                                     padding: EdgeInsetsDirectional.only(
-                                        top: 10.0, bottom: 0.0, start: 0.0, end: 0.0),
+                                        top: 10.0,
+                                        bottom: 0.0,
+                                        start: 0.0,
+                                        end: 0.0),
                                     child: Center(
                                       child: Text('',
                                           style: TextStyle(color: Colors.red)),
@@ -199,13 +212,16 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                 child: ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor:
-                                    MaterialStateProperty.all<Color>(Colors.green),
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.green),
                                   ),
                                   onPressed: () async {
                                     await http.post(
-                                        Uri.parse('http://127.0.0.1:8000/order_json/'),
+                                        Uri.parse(
+                                            'http://127.0.0.1:8000/order_json/'),
                                         headers: <String, String>{
-                                          'Content-Type': 'application/json; charset=UTF-8'
+                                          'Content-Type':
+                                              'application/json; charset=UTF-8'
                                         },
                                         body: jsonEncode(<String, String>{
                                           'note': note,
@@ -236,8 +252,10 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                     children: <Widget>[
                       Text(
                         'Ringkasan',
-                        style:
-                        Theme.of(context).textTheme.headline6!.copyWith(fontSize: 17.0),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(fontSize: 17.0),
                       ),
                       UIHelper.verticalSpaceMedium(),
                       Row(
@@ -256,7 +274,8 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                   child: Text('Error'),
                                 );
                               } else if (snapshot.hasData) {
-                                return Text(snapshot.data!.getItemsTotal.toString(),
+                                return Text(
+                                    snapshot.data!.getItemsTotal.toString(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1!
@@ -286,7 +305,10 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                 );
                               } else if (snapshot.hasData) {
                                 return Text(
-                                    "\$" + snapshot.data!.getPriceTotal.toString() + ".00",
+                                    "\$" +
+                                        snapshot.data!.getPriceTotal
+                                            .toString() +
+                                        ".00",
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1!
@@ -354,10 +376,11 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                         child: Text('Error'),
                                       );
                                     } else if (snapshot.hasData) {
-                                      if (snapshot.data!.user != 0) {
+                                      if (snapshot.data!.user == 0) {
                                         return const Center(
                                           child: Text('Login first',
-                                              style: TextStyle(color: Colors.red)),
+                                              style:
+                                                  TextStyle(color: Colors.red)),
                                         );
                                       }
                                       return ElevatedButton(
@@ -368,16 +391,18 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                         onPressed: () async {
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(builder: (context) => const MyCheckoutForm()),
-                                          );                                  },
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MyCheckoutForm()),
+                                          );
+                                        },
                                         child: const Text('CHECKOUT'),
                                       );
                                     }
                                     // By default, show a loading spinner.
                                     return const CircularProgressIndicator();
                                   },
-                                )
-                            ),
+                                )),
                           )
                         ],
                       )
@@ -385,12 +410,11 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                   ),
                 ],
               ),
-            )
-        )
-    );
+            )));
   }
 
-  Widget _listProduct(List<ProductMaskerCart> products, List<ItemMaskerCart> items) {
+  Widget _listProduct(
+      List<ProductMaskerCart> products, List<ItemMaskerCart> items) {
     double field = 130;
     return SizedBox(
       height: field * items.length,
@@ -421,7 +445,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
+                            MaterialStateProperty.all<Color>(Colors.red),
                       ),
                       onPressed: () async {
                         await http.post(
@@ -466,7 +490,8 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           InkWell(
-                            child: const Icon(Icons.remove, color: Colors.green),
+                            child:
+                                const Icon(Icons.remove, color: Colors.green),
                             onTap: () {
                               if (item!.quantity > 1) {
                                 setState(() {
@@ -497,7 +522,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.green),
+                            MaterialStateProperty.all<Color>(Colors.green),
                       ),
                       onPressed: () async {
                         await http.post(
@@ -528,6 +553,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
       ),
     );
   }
+
   Widget _listCustom(List<CustomMaskerCart> customs) {
     double field = 115;
     return SizedBox(
@@ -560,7 +586,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
+                            MaterialStateProperty.all<Color>(Colors.red),
                       ),
                       onPressed: () async {
                         await http.post(
