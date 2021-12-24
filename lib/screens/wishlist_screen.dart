@@ -7,21 +7,26 @@ import '../widgets/simple_table_page.dart';
 import '../models/wishlist_item.dart';
 
 Future<List<WishlistItem>> fetchItems() async {
-  const url = 'http://localhost:8000/request-data';
   List<WishlistItem> items = [];
+  // Map<String, dynamic> session = {};
+  // session = await login();
+  // print(session);
   try {
+    // String uid = session["user_id"].toString();
+    // String request = session["request"].toString();
+
+    var requestUrl = "http://pbp-c07.herokuapp.com/request-data/?owner_id=1";
+
     final response = await http.get(
-      Uri.parse(url),
+      Uri.parse(requestUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
     );
-    // print(response.body);
+    print("FETCHITEMS RESPONSE " + response.body);
     List<dynamic> extractedData = jsonDecode(response.body);
     extractedData.forEach((map) {
       Map<String, dynamic> fields = map["fields"];
-      // List<String> temp = [];
-      // fields.forEach((vkey, vvalue) {
-      //   temp.add(vvalue.toString());
-      // });
-      // data.add(temp);
       items.add(WishlistItem.fromJson(fields));
     });
   } catch (error) {
@@ -30,32 +35,46 @@ Future<List<WishlistItem>> fetchItems() async {
   return Future.value(items);
 }
 
+// Future<Map<String, dynamic>> login() async {
+//   const url = 'http://localhost:8000/flutter-login/';
+//   Map<String, dynamic> session = {};
+//   try {
+//     final response = await http.post(Uri.parse(url),
+//         headers: <String, String>{
+//           'Content-Type': 'application/json; charset=UTF-8',
+//         },
+//         body: jsonEncode(<String, String>{
+//           'username': 'davidalexander',
+//           'password': 'davidalexander',
+//         }));
+//     Map<String, dynamic> data = jsonDecode(response.body);
+//     print(data);
+//     if (data["status"] == true) {
+//       session["username"] = data["username"];
+//       session["user_id"] = data["user_id"].toString();
+//       session["user"] = data["user"];
+//     }
+//   } catch (error) {
+//     print(error);
+//   }
+
+//   return session;
+// }
+
 class WishList extends StatefulWidget {
   const WishList({Key? key}) : super(key: key);
-
-  List<List<String>> makeData() {
-    final List<List<String>> output = [];
-
-    List<String> r = [];
-    r.add("1");
-    r.add("2");
-
-    output.add(r);
-    output.add(r);
-
-    return output;
-  }
-
   @override
   _WishListState createState() => _WishListState();
 }
 
 class _WishListState extends State<WishList> {
   late Future<List<WishlistItem>> futureItems;
+  // late Future<Map<String, dynamic>> session;
 
   @override
   void initState() {
     super.initState();
+    // session = login();
     futureItems = fetchItems();
   }
 
@@ -86,129 +105,139 @@ class _WishListState extends State<WishList> {
   }
 
   Widget buildTable(List<WishlistItem> items) {
-    return Column(
-      children: <Widget>[
-        Container(
-          alignment: Alignment.centerLeft,
-          margin: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-          child: const Text(
-            "Wishlist Page",
-            style: TextStyle(
-              fontSize: 35,
-              fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+            child: const Text(
+              "Wishlist Page",
+              style: TextStyle(
+                fontSize: 35,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        Container(
-          alignment: Alignment.centerLeft,
-          margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-          child: FloatingActionButton.extended(
-            onPressed: () {
-              Navigator.pushNamed(context, '/create');
-            },
-            icon: const Icon(Icons.add),
-            label: const Text("New Wishlist Item"),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.pushNamed(context, '/create-wishlist');
+              },
+              icon: const Icon(Icons.add),
+              label: const Text("New Wishlist Item"),
+            ),
           ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(10),
-          child: Table(
-            border: TableBorder.all(),
-            children: [
-              TableRow(children: [
-                Column(children: [
-                  Icon(Icons.text_fields, size: iconSize),
-                  const Center(
-                    child: Text("Name", style: rowTextStyle),
-                  ),
-                ]),
-                Column(children: [
-                  Icon(Icons.money, size: iconSize),
-                  const Text("Price", style: rowTextStyle),
-                ]),
-                Column(children: [
-                  Icon(Icons.confirmation_number, size: iconSize),
-                  const Text("Count", style: rowTextStyle),
-                ]),
-                Column(children: [
-                  Icon(Icons.call_to_action, size: iconSize),
-                  const Text("Action", style: rowTextStyle),
-                ]),
-              ]),
-              for (WishlistItem item in items)
-                TableRow(
-                  children: [
-                    // name
-                    Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(32.5),
-                          child: Text(item.name, style: rowTextStyle),
-                        ),
-                      ],
+          Container(
+            margin: const EdgeInsets.all(10),
+            child: Table(
+              border: TableBorder.all(),
+              children: [
+                TableRow(children: [
+                  Column(children: [
+                    Icon(Icons.text_fields, size: iconSize),
+                    const Center(
+                      child: Text("Name", style: rowTextStyle),
                     ),
-
-                    // price
-                    Column(children: [
-                      Padding(
-                        padding: EdgeInsets.all(32.5),
-                        child: Text("\$${item.price}", style: rowTextStyle),
+                  ]),
+                  Column(children: [
+                    Icon(Icons.money, size: iconSize),
+                    const Text("Price", style: rowTextStyle),
+                  ]),
+                  Column(children: [
+                    Icon(Icons.confirmation_number, size: iconSize),
+                    const Text("Count", style: rowTextStyle),
+                  ]),
+                  Column(children: [
+                    Icon(Icons.call_to_action, size: iconSize),
+                    const Text("Action", style: rowTextStyle),
+                  ]),
+                ]),
+                for (WishlistItem item in items)
+                  TableRow(
+                    children: [
+                      // name
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(32.5),
+                            child: Text(item.name, style: rowTextStyle),
+                          ),
+                        ],
                       ),
-                    ]),
 
-                    // count
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                      // price
+                      Column(children: [
                         Padding(
                           padding: EdgeInsets.all(32.5),
-                          child:
-                              Text(item.count.toString(), style: rowTextStyle),
+                          child: Text("\$${item.price}", style: rowTextStyle),
                         ),
-                      ],
-                    ),
+                      ]),
 
-                    // action
-                    Column(
-                      children: [
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.edit, size: 18),
-                          label: const Text("Edit"),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/edit');
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.yellow.shade800,
-                            fixedSize: buttonSize,
+                      // count
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(32.5),
+                            child: Text(item.count.toString(),
+                                style: rowTextStyle),
                           ),
-                        ),
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.delete, size: 18),
-                          label: const Text("Delete"),
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                            fixedSize: buttonSize,
+                        ],
+                      ),
+
+                      // action
+                      Column(
+                        children: [
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.edit, size: 18),
+                            label: const Text("Edit"),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Unavailable')),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.yellow.shade800,
+                              fixedSize: buttonSize,
+                            ),
                           ),
-                        ),
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.shopping_cart, size: 18),
-                          label: const Text("Add to Cart"),
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.grey,
-                            fixedSize: buttonSize,
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.delete, size: 18),
+                            label: const Text("Delete"),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Unavailable')),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              fixedSize: buttonSize,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-            ],
-          ),
-        )
-      ],
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.shopping_cart, size: 18),
+                            label: const Text("Add to Cart"),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/cart');
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.grey,
+                              fixedSize: buttonSize,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
