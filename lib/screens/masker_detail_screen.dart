@@ -87,7 +87,19 @@ class MaskerDetailScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final response = await http.post(
+                          Uri.parse('http://127.0.0.1:8000/add_json/'),
+                          headers: <String, String>{
+                            'Content-Type': 'application/json; charset=UTF-8'
+                          },
+                          body: jsonEncode(<String, String>{
+                            'productId' : maskerId.toString()
+                          })
+                        );
+                        print(response);
+                        print(response.body);
+                      },
                       child: Text(
                         "Add to Cart",
                         style: TextStyle(
