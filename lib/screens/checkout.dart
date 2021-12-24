@@ -521,7 +521,7 @@ class MyConfirmationFormState extends State<MyConfirmation> {
                                     );
                                   } else if (snapshot.hasData) {
                                     return TextFormField(
-                                      initialValue: snapshot.data!.getItemsTotal.toString(),
+                                      initialValue: snapshot.data!.getItemsTotal.toString() + "/\$" + snapshot.data!.getPriceTotal.toString(),
                                       readOnly: true,
                                       keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
@@ -544,7 +544,7 @@ class MyConfirmationFormState extends State<MyConfirmation> {
                                     );
                                   } else if (snapshot.hasData) {
                                     return TextFormField(
-                                      initialValue: cariHargaPengiriman(
+                                      initialValue: "\$" + cariHargaPengiriman(
                                           MyCheckoutFormState.durasi, snapshot.data!.getPriceTotal)
                                           .toString(),
                                       readOnly: true,
@@ -642,7 +642,7 @@ class MyConfirmationFormState extends State<MyConfirmation> {
                                       MyCheckoutFormState.metodePembayaran = null;
                                       // Kosongin cart, back to home page
                                       final response = await http.post(
-                                        Uri.parse('http://127.0.0.1:8000/checkout_flutter'),
+                                        Uri.parse('https://pbp-c07.herokuapp.com/checkout_flutter'),
                                         headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8'});
                                       print(response);
                                       print(response.body);
