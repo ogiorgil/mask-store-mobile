@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import '../widgets/simple_table_page.dart';
 import '../models/wishlist_item.dart';
+import 'shopping_cart.dart';
 
 Future<List<WishlistItem>> fetchItems() async {
   List<WishlistItem> items = [];
@@ -124,7 +125,9 @@ class _WishListState extends State<WishList> {
             margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
             child: FloatingActionButton.extended(
               onPressed: () {
-                Navigator.pushNamed(context, '/create-wishlist');
+                Navigator.pushNamed(context, '/create-wishlist').then((value) {
+                  setState(() {});
+                });
               },
               icon: const Icon(Icons.add),
               label: const Text("New Wishlist Item"),
@@ -222,7 +225,11 @@ class _WishListState extends State<WishList> {
                             icon: const Icon(Icons.shopping_cart, size: 18),
                             label: const Text("Add to Cart"),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/cart');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (ctx) =>
+                                          const ShoppingCartForm()));
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.grey,

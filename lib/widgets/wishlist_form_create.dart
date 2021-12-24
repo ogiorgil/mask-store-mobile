@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class WishlistForm extends StatefulWidget {
   const WishlistForm({Key? key}) : super(key: key);
@@ -91,12 +93,28 @@ class _WishlistFormState extends State<WishlistForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         print("Submit button pressed");
                         if (_formKey.currentState!.validate()) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Processing input')),
                           );
+
+                          var requestUrl =
+                              "http://pbp-c07.herokuapp.com/post-data/";
+
+                          final response =
+                              await http.post(Uri.parse(requestUrl),
+                                  headers: <String, String>{
+                                    'Content-Type':
+                                        'application/json; charset=UTF-8',
+                                  },
+                                  body: jsonEncode(<String, String>{
+                                    'user': '1',
+                                    'name': _nameController.text,
+                                    'price': _priceController.text,
+                                    'count': _countController.text,
+                                  }));
                           Navigator.pop(context);
                         }
                       },
