@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:tugas_akhir/screens/wishlist_screen.dart';
 import '../models/masker.dart';
 import 'home_screen.dart';
 
@@ -72,6 +73,26 @@ class MaskerDetailScreen extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color(0xffF18265),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Add to Cart",
+                        style: TextStyle(
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   )
