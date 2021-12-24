@@ -12,6 +12,7 @@ import 'package:tugas_akhir/screens/shopping_cart.dart';
 import 'package:tugas_akhir/screens/wishlist_screen.dart';
 import 'package:tugas_akhir/widgets/wishlist_form_create.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:tugas_akhir/screens/custom.dart';
 
 void main() {
   runApp(const MyApp());
@@ -60,7 +61,7 @@ class _MyAppState extends State<MyApp> {
     'home': const HomeScreen(),
     'wishlist': const WishList(),
     'cart': const ShoppingCartForm(),
-    'customize': const HomeScreen(),
+    'customize': const Custom(),
     'products': const ProductsScreen(),
   };
 

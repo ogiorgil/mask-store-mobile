@@ -376,13 +376,13 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                         child: Text('Error'),
                                       );
                                     } else if (snapshot.hasData) {
-                                      if (snapshot.data!.user == 0) {
-                                        return const Center(
-                                          child: Text('Login first',
-                                              style:
-                                                  TextStyle(color: Colors.red)),
-                                        );
-                                      }
+                                      // if (snapshot.data!.user == 0) {
+                                      //   return const Center(
+                                      //     child: Text('Login first',
+                                      //         style:
+                                      //             TextStyle(color: Colors.red)),
+                                      //   );
+                                      // }
                                       return ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           primary: Colors.green,

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_form_field/image_picker_form_field.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
+import 'package:tugas_akhir/screens/shopping_cart.dart';
 
 final cloudinary =
     CloudinaryPublic("dvfyxrw6z", "custom_mask_preset", cache: false);
@@ -254,7 +255,12 @@ class _BelajarFormState extends State<BelajarForm> {
                                           print(e.message);
                                           print(e.request);
                                         }
-                                        // Navigator.pop(context);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ShoppingCartForm()),
+                                        );
                                       }),
                                 ],
                               ));
