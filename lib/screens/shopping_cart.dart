@@ -48,7 +48,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                       Icon(Icons.masks_rounded, size: 20.0),
                       UIHelper.horizontalSpaceSmall(),
                       Text(
-                        'Product Masker Cart',
+                        'Product Masker Items',
                         style: Theme.of(context)
                             .textTheme
                             .headline4!
@@ -119,7 +119,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                       Icon(Icons.masks_rounded, size: 20.0),
                       UIHelper.horizontalSpaceSmall(),
                       Text(
-                        'Custom Masker Cart',
+                        'Customize Items',
                         style: Theme.of(context)
                             .textTheme
                             .headline4!
@@ -217,7 +217,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                                       futureOrderCart = fetchOrderCart();
                                     });
                                   },
-                                  child: const Text('Simpan'),
+                                  child: const Text('Submit'),
                                 ),
                               );
                             }
@@ -246,7 +246,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text('Jumlah Item',
+                            Text('Jumlah Item:',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
@@ -275,7 +275,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text('Total Harga',
+                            Text('Total Harga:',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
@@ -305,7 +305,7 @@ class _ShoppingCartFormState extends State<ShoppingCartForm> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text('Catatan',
+                            Text('Catatan:',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
