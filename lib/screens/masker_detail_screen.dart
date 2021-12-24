@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:tugas_akhir/screens/wishlist_screen.dart';
 import '../models/masker.dart';
 import 'home_screen.dart';
@@ -89,7 +91,7 @@ class MaskerDetailScreen extends StatelessWidget {
                       ),
                       onPressed: () async {
                         final response = await http.post(
-                          Uri.parse('http://127.0.0.1:8000/add_json/'),
+                          Uri.parse('https://pbp-c07.herokuapp.com/add_json/'),
                           headers: <String, String>{
                             'Content-Type': 'application/json; charset=UTF-8'
                           },
