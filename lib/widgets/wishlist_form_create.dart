@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../../main.dart';
 
 class WishlistForm extends StatefulWidget {
   const WishlistForm({Key? key}) : super(key: key);
@@ -20,7 +17,7 @@ class _WishlistFormState extends State<WishlistForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create item'),
+        title: const Text('Create/Edit item'),
         backgroundColor: Colors.black,
       ),
       body: Form(
@@ -94,27 +91,12 @@ class _WishlistFormState extends State<WishlistForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () async {
+                      onPressed: () {
                         print("Submit button pressed");
                         if (_formKey.currentState!.validate()) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Processing input')),
                           );
-
-                          var requestUrl =
-                              "http://pbp-c07.herokuapp.com/post-data/";
-                          final response =
-                              await http.post(Uri.parse(requestUrl),
-                                  headers: <String, String>{
-                                    'Content-Type':
-                                        'application/json; charset=UTF-8',
-                                  },
-                                  body: jsonEncode(<String, String>{
-                                    'user': '1',
-                                    'name': _nameController.text,
-                                    'price': _priceController.text,
-                                    'count': _countController.text,
-                                  }));
                           Navigator.pop(context);
                         }
                       },
