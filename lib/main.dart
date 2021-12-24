@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tugas_akhir/screens/home_screen.dart';
 import 'package:tugas_akhir/screens/masker_detail_screen.dart';
+import 'package:tugas_akhir/screens/products_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tugas_akhir/screens/shopping_cart.dart';
@@ -36,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   final List<Map<String, Object>> _pages = [
     {'page': const HomeScreen(), 'title': "Tugas Akhir PBP-C07"},
     {
-      'page': const WishList(), //product
+      'page': const ProductsScreen(), //product
       'title': "Products"
     },
   ];
@@ -60,7 +61,7 @@ class _MyAppState extends State<MyApp> {
     'wishlist': const WishList(),
     'cart': const ShoppingCartForm(),
     'customize': const HomeScreen(),
-    'products': const HomeScreen(),
+    'products': const ProductsScreen(),
   };
 
   final Map<String, String> _titles = {
@@ -96,6 +97,7 @@ class _MyAppState extends State<MyApp> {
         '/create-wishlist': (ctx) => const WishlistForm(),
         '/cart': (ctx) => const ShoppingCartForm(),
         '/home': (ctx) => const HomeScreen(),
+        '/products': (ctx) => const ProductsScreen(),
       },
       home: Scaffold(
         appBar: AppBar(
