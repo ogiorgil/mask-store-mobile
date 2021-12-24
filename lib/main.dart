@@ -13,6 +13,7 @@ import 'package:tugas_akhir/screens/wishlist_screen.dart';
 import 'package:tugas_akhir/widgets/wishlist_form_create.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:tugas_akhir/screens/custom.dart';
+import 'login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,6 +64,7 @@ class _MyAppState extends State<MyApp> {
     'cart': const ShoppingCartForm(),
     'customize': const Custom(),
     'products': const ProductsScreen(),
+    'login': LoginPage(),
   };
 
   final Map<String, String> _titles = {
@@ -70,7 +72,8 @@ class _MyAppState extends State<MyApp> {
     'wishlist': 'Wishlist',
     'cart': 'Shopping Cart',
     'customize': 'Customize Masker',
-    'products': 'Products'
+    'products': 'Products',
+    'login': 'Login',
   };
 
   void _drawerTap(String page) {
@@ -90,7 +93,7 @@ class _MyAppState extends State<MyApp> {
         textTheme: const TextTheme(bodyText2: TextStyle(color: Colors.black)),
       ),
       debugShowCheckedModeBanner: false,
-      // initialRoute: '/',
+      // initialRoute: '/login': (ctx) => const ,
       routes: {
         // '/products: (context) => const ProductPage(),
         MaskerDetailScreen.routeName: (ctx) => const MaskerDetailScreen(),
@@ -99,6 +102,7 @@ class _MyAppState extends State<MyApp> {
         '/cart': (ctx) => const ShoppingCartForm(),
         '/home': (ctx) => const HomeScreen(),
         '/products': (ctx) => const ProductsScreen(),
+        '/login': (ctx) => LoginPage(),
       },
       home: Scaffold(
         appBar: AppBar(
@@ -127,6 +131,14 @@ class _MyAppState extends State<MyApp> {
                             ),
                           ),
                         ),
+                      ),
+                      ListTile(
+                        title: const Text("Login"),
+                        onTap: () {
+                          // do stuff
+                          _drawerTap("login");
+                          Navigator.pop(context);
+                        },
                       ),
                       ListTile(
                         title: const Text("Home"),
