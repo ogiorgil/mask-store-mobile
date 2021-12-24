@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
-import 'widgets/simple_table_page.dart';
+import '../widgets/simple_table_page.dart';
 import '../models/wishlist_item.dart';
 
 Future<List<WishlistItem>> fetchItems() async {

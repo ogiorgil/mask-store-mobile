@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tugas_akhir/screens/shopping_cart.dart';
 import 'package:tugas_akhir/screens/wishlist_screen.dart';
-import 'package:tugas_akhir/screens/widgets/wishlist_form_create.dart';
+import 'package:tugas_akhir/widgets/wishlist_form_create.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
